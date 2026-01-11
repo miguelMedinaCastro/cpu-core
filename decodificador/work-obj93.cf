@@ -1,7 +1,0 @@
-v 4
-file . "./decoder_tb.vhd" "f864f05e2b761fd77d9a7193281a28d3ce6d8d57" "20260108035917.247":
-  entity decoder_tb at 22( 466) + 0 on 13;
-  architecture behavior of decoder_tb at 37( 840) + 0 on 14;
-file . "./decoder2x4.vhdl" "e865f38ccb673b67d82834e08b2553d36fbce088" "20260108035907.151":
-  entity decoder2x4 at 1( 0) + 0 on 11;
-  architecture behavior of decoder2x4 at 14( 226) + 0 on 12;
