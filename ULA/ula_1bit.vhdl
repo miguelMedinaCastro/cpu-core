@@ -33,7 +33,7 @@ begin
 
   AxB <= A xor B;
 
-  -- full adder
+  -- full adder 
   fio_full_adder  <= AxB xor Cin;
   cout_full_adder <= (AxB and Cin) or (A and B);
 
@@ -41,6 +41,7 @@ begin
   fio_subtracao  <= AxB xor Cin;
   cout_subtracao <= (not A and B) or (Cin and not AxB);
 
+  -- mesma logica para subtracao, mas colocar not no segundo valor
   S <= fio_full_adder when (op_code = "000") else
     fio_subtracao when (op_code = "001") else
     fio_and when (op_code = "010") else
@@ -51,4 +52,6 @@ begin
   Cout <= cout_full_adder when (op_code = "000") else
     cout_subtracao when (op_code = "001") else
     '0';
+
+  -- fazer generate para ula N bits
 end architecture;

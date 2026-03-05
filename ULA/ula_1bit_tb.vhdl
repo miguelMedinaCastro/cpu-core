@@ -29,62 +29,57 @@ begin
       Cout    => Cout
     );
 
+    -- fazer um CONTADOR! assim testa todos
   process
   begin
-    op_code <= "000";
-    A       <= '0';
-    B       <= '1';
-    Cin     <= '0'; -- 0 + 1 + 0 = Soma 1, Carry 0
-    wait for 10 ns;
+    op_code <= "000";  A <= '0'; B  <= '0';    Cin  <= '0'; wait for 10 ns;
+      A <= '0'; B  <= '0';    Cin  <= '1'; wait for 10 ns;
+      A <= '0'; B  <= '1';    Cin  <= '0'; wait for 10 ns;
+      A <= '0'; B  <= '1';    Cin  <= '1'; wait for 10 ns;
+      A <= '1'; B  <= '0';    Cin  <= '0'; wait for 10 ns;
+      A <= '1'; B  <= '0';    Cin  <= '1'; wait for 10 ns;
+      A <= '1'; B  <= '1';    Cin  <= '0'; wait for 10 ns;
+      A <= '1'; B  <= '1';    Cin  <= '1'; wait for 10 ns;
+    
+    op_code <= "001";  A <= '0'; B  <= '0';    Cin  <= '0'; wait for 10 ns;
+      A <= '0'; B  <= '0';    Cin  <= '1'; wait for 10 ns;
+      A <= '0'; B  <= '1';    Cin  <= '0'; wait for 10 ns;
+      A <= '0'; B  <= '1';    Cin  <= '1'; wait for 10 ns;
+      A <= '1'; B  <= '0';    Cin  <= '0'; wait for 10 ns;
+      A <= '1'; B  <= '0';    Cin  <= '1'; wait for 10 ns;
+      A <= '1'; B  <= '1';    Cin  <= '0'; wait for 10 ns;
+      A <= '1'; B  <= '1';    Cin  <= '1'; wait for 10 ns;
 
-    A   <= '1';
-    B   <= '1';
-    Cin <= '0'; -- 1 + 1 + 0 = Soma 0, Carry 1 (Vai um!)
-    wait for 10 ns;
+    op_code <= "010";  A <= '0'; B  <= '0';    Cin  <= '0'; wait for 10 ns;
+      A <= '0'; B  <= '0';    Cin  <= '1'; wait for 10 ns;
+      A <= '0'; B  <= '1';    Cin  <= '0'; wait for 10 ns;
+      A <= '0'; B  <= '1';    Cin  <= '1'; wait for 10 ns;
+      A <= '1'; B  <= '0';    Cin  <= '0'; wait for 10 ns;
+      A <= '1'; B  <= '0';    Cin  <= '1'; wait for 10 ns;
+      A <= '1'; B  <= '1';    Cin  <= '0'; wait for 10 ns;
+      A <= '1'; B  <= '1';    Cin  <= '1'; wait for 10 ns;
 
-    A   <= '1';
-    B   <= '1';
-    Cin <= '1'; -- 1 + 1 + 1 = Soma 1, Carry 1
-    wait for 10 ns;
+      op_code <= "011";  A <= '0'; B  <= '0';    Cin  <= '0'; wait for 10 ns;
+      A <= '0'; B  <= '0';    Cin  <= '1'; wait for 10 ns;
+      A <= '0'; B  <= '1';    Cin  <= '0'; wait for 10 ns;
+      A <= '0'; B  <= '1';    Cin  <= '1'; wait for 10 ns;
+      A <= '1'; B  <= '0';    Cin  <= '0'; wait for 10 ns;
+      A <= '1'; B  <= '0';    Cin  <= '1'; wait for 10 ns;
+      A <= '1'; B  <= '1';    Cin  <= '0'; wait for 10 ns;
+      A <= '1'; B  <= '1';    Cin  <= '1'; wait for 10 ns;
 
-    op_code <= "001";
-    A       <= '1';
-    B       <= '0';
-    Cin     <= '0'; -- 1 - 0 - 0 = Result 1, Borrow 0
-    wait for 10 ns;
+      
 
-    A   <= '0';
-    B   <= '1';
-    Cin <= '0'; -- 0 - 1 - 0 = Result 1, Borrow 1 (Emprestou!)
-    wait for 10 ns;
+    op_code <= "100";  A <= '0'; B  <= '0';    Cin  <= '0'; wait for 10 ns;
+      A <= '0'; B  <= '0';    Cin  <= '1'; wait for 10 ns;
+      A <= '0'; B  <= '1';    Cin  <= '0'; wait for 10 ns;
+      A <= '0'; B  <= '1';    Cin  <= '1'; wait for 10 ns;
+      A <= '1'; B  <= '0';    Cin  <= '0'; wait for 10 ns;
+      A <= '1'; B  <= '0';    Cin  <= '1'; wait for 10 ns;
+      A <= '1'; B  <= '1';    Cin  <= '0'; wait for 10 ns;
+      A <= '1'; B  <= '1';    Cin  <= '1'; wait for 10 ns;
 
-    op_code <= "010";
-    A       <= '1';
-    B       <= '1';
-    Cin     <= '0'; -- 1 AND 1 = 1 (Carry tem que ser 0)
-    wait for 10 ns;
 
-    A   <= '1';
-    B   <= '0';
-    Cin <= '0'; -- 1 AND 0 = 0
-    wait for 10 ns;
-
-    op_code <= "011";
-    A       <= '0';
-    B       <= '1';
-    Cin     <= '0'; -- 0 OR 1 = 1
-    wait for 10 ns;
-
-    op_code <= "100";
-    A       <= '0';
-    B       <= '1';
-    Cin     <= '1'; -- (B e Ci são ignorados)
-    wait for 10 ns;
-
-    A   <= '1';
-    B   <= '0';
-    Cin <= '0'; -- NOT 1 = 0
-    wait for 10 ns;
 
     wait;
   end process;
