@@ -10,20 +10,19 @@ entity reg_bank_tb is
 end entity;
 
 architecture tb of reg_bank_tb is
-  --dar nome significativo
-  constant X : natural := 3;
-  constant Y : natural := 16;
-  constant Z : natural := 8; --declarar z = 2 elevado na x
+  constant address_width : natural := 3;
+  constant data_width : natural := 16;
+  constant register_count : natural := 2**address_width; 
 
-  signal r_addr_1 : std_logic_vector(X - 1 downto 0) := (others => '0');
-  signal r_addr_2 : std_logic_vector(X - 1 downto 0) := (others => '0');
-  signal w_addr   : std_logic_vector(X - 1 downto 0) := (others => '0');
+  signal r_addr_1 : std_logic_vector(address_width - 1 downto 0) := (others => '0');
+  signal r_addr_2 : std_logic_vector(address_width - 1 downto 0) := (others => '0');
+  signal w_addr   : std_logic_vector(address_width - 1 downto 0) := (others => '0');
   signal w        : std_logic;
   signal reset    : std_logic;
   signal clk      : std_logic;
-  signal data_i   : std_logic_vector(Y - 1 downto 0) := (others => '0');
-  signal data_o_1 : std_logic_vector(Y - 1 downto 0);
-  signal data_o_2 : std_logic_vector(Y - 1 downto 0);
+  signal data_i   : std_logic_vector(data_width - 1 downto 0) := (others => '0');
+  signal data_o_1 : std_logic_vector(data_width - 1 downto 0);
+  signal data_o_2 : std_logic_vector(data_width - 1 downto 0);
 
 begin
   clk_process : process
@@ -43,7 +42,6 @@ begin
       w_addr   => w_addr,
       clk      => clk,
       w        => w,
-      --reset    => reset,
       data_i   => data_i,
       data_o_1 => data_o_1,
       data_o_2 => data_o_2
@@ -52,7 +50,7 @@ begin
   process
   begin
     w <= '1';
-    for i in 0 to Z - 1 loop
+    for i in 0 to register_count - 1 loop
       w_addr <= std_logic_vector(to_unsigned(i, 3));
       data_i <= std_logic_vector(to_unsigned(i * 10, Y));
       wait until rising_edge(clk);

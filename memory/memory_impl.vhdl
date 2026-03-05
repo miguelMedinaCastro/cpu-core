@@ -9,7 +9,7 @@ entity memory_impl is
   generic (
     X : natural := 8;
     Y : natural := 16;
-    Z : natural := 256
+    Z : natural := 2**X
   );
   port (
     addr   : in std_logic_vector(X - 1 downto 0);
@@ -20,6 +20,7 @@ entity memory_impl is
     data_o : out std_logic_vector(Y - 1 downto 0)
   );
 end memory_impl;
+
 architecture behavior of memory_impl is
 
   type memory is array(Z - 1 downto 0) of std_logic_vector(Y - 1 downto 0);
