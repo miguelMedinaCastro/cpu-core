@@ -1,25 +1,44 @@
-GHDL      = ghdl
 GHDLFLAGS = --std=08 -fsynopsys
 
-SRC = ula_1bit.vhdl
-TB  = ula_1bit_tb.vhdl
-TOP = ula_1bit_tb
-WAVE = ula.vcd
+SRC_1bit = ula_1bit.vhdl
+TB_1bit  = ula_1bit_tb.vhdl
+TOP_1bit = ula_1bit_tb
+
+WAVE_1bit = ula_1bit.vcd
+
+SRC_Nbits = ula_Nbits.vhdl
+TB_Nbits  = ula_Nbits_tb.vhdl
+TOP_Nbits = ula_Nbits_tb
+
+WAVE_Nbits = ula_Nbits.vcd
 
 all: run
 
 analyze:
-	$(GHDL) -a $(GHDLFLAGS) $(SRC)
-	$(GHDL) -a $(GHDLFLAGS) $(TB)
-
+# 	ghdl -a $(GHDLFLAGS) $(SRC_1bit)
+# 	ghdl -a $(GHDLFLAGS) $(TB_1bit)
+	
+# 	n bits
+	ghdl -a $(GHDLFLAGS) $(SRC_Nbits)
+	ghdl -a $(GHDLFLAGS) $(TB_Nbits)
+	
 elab:
-	$(GHDL) -e $(GHDLFLAGS) $(TOP)
+# 	ghdl -e $(GHDLFLAGS) $(TOP_1bit)
+# n bits
+	ghdl -e $(GHDLFLAGS) $(TOP_Nbits)
 
 run: analyze elab
-	$(GHDL) -r $(GHDLFLAGS) $(TOP) --vcd=$(WAVE)
+# 	ghdl -r $(GHDLFLAGS) $(TOP_1bit) --vcd=$(WAVE_1bit)
 
-wave:
-	gtkwave $(WAVE)
+# n bits
+	ghdl -r $(GHDLFLAGS) $(TOP_Nbits) --vcd=$(WAVE_Nbits)
+
+
+wave_1bit:
+	gtkwave $(WAVE_1bit)
+
+wave_Nbit:
+	gtkwave $(WAVE_Nbits)
 
 clean:
 	$(GHDL) --clean
