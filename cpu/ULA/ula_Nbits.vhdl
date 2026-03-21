@@ -4,7 +4,7 @@ use ieee.std_logic_1164.all;
 entity ula_Nbits is
   generic (
     bitsOperations : natural := 3;
-    bits           : natural := 16
+    bits           : natural := 4
   );
   port (
     A, B    : in std_logic_vector(bits - 1 downto 0);

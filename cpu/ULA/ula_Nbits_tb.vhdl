@@ -8,9 +8,8 @@ end entity ula_Nbits_tb;
 architecture behavior of ula_Nbits_tb is
 
   constant bits_operations : natural                                        := 3;
-  constant ns_time         : natural                                        := 10;
   constant bits            : natural                                        := 4;
-  constant operations      : natural                                        := (2 ** bits_operations) * ns_time;
+  constant operations      : natural                                        := (2 ** bits_operations) * 10;
   constant totalBits       : natural                                        := bits_operations + (2 * bits) + 1;
 
   signal A                 : std_logic_vector(bits - 1 downto 0)            := (others => '0');
@@ -48,7 +47,7 @@ begin
   counter : process
   begin
 
-    wait for ns_time * 1 ns;
+    wait for  10 ns;
 
     if count = (count'range => '1') then
       wait;
@@ -56,6 +55,10 @@ begin
       count <= count + 1;
     end if;
 
+    -- colocar assert
+    -- assert 
+    --   report "deu certo"
+    --   severity FAILURE;
     
   end process;
 
