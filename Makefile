@@ -57,7 +57,7 @@ ula:
 	ghdl -r $(FLAGS) ula_Nbits_tb --vcd=ulaNbits.vcd
 
 wave:
-	gtkwave ulaNbits.vcd
+	surfer ulaNbits.vcd
 
 clean:
 	rm -f *.cf *.vcd $(TB)
