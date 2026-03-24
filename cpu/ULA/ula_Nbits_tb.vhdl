@@ -47,6 +47,7 @@ begin
   begin
     wait for 10 ns;
 
+    -- colocar assert
     if count = (count'range => '1') then
       report "fim" severity note;
       wait;

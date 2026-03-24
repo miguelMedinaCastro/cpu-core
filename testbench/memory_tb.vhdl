@@ -6,10 +6,10 @@ use ieee.std_logic_textio.all;
 library std;
 use std.textio.all;
 
-entity memory_impl_tb is
+entity memory_tb is
 end entity;
 
-architecture tb of memory_impl_tb is
+architecture tb of memory_tb is
 
   constant X : natural := 8;
   constant Y : natural := 16;

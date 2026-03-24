@@ -52,7 +52,7 @@ begin
     w <= '1';
     for i in 0 to register_count - 1 loop
       w_addr <= std_logic_vector(to_unsigned(i, 3));
-      data_i <= std_logic_vector(to_unsigned(i * 10, Y));
+      data_i <= std_logic_vector(to_unsigned(i * 10, data_width));
       wait until rising_edge(clk);
     end loop;
 
