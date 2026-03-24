@@ -6,6 +6,8 @@ use ieee.std_logic_textio.all;
 library std;
 use std.textio.all;
 
+--oi
+
 entity memory_tb is
 end entity;
 
