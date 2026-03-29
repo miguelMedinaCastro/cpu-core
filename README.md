@@ -1,7 +1,3 @@
----
-icon: hand-wave
----
-
 # Bem-vindo à CPU Didática!
 
 ### Visão Geral
