@@ -14,7 +14,7 @@ Nesta página, vamos detalhar os principais módulos que compõem uma cpu e ente
 
 
 
-_"vou colocar as imagens e os codigos nos exemplos, mandando apenas para pegar o feedback"_
+_"vou colocar as imagens e os codigos nos exemplos, mandando apenas para pegar o feedback e também a minha ideia seria que cada módulo aqui tivesse sua página para eu deixar bem mais completo, ainda em construção"_
 
 
 
