@@ -12,7 +12,7 @@ Abaixo, você vai entender de forma simplificada o que é uma CPU, como ela toma
 
 
 
-_"minha ideia seria colocar mesmo as imagens e codigos em seus respectivo lugar em toda a documentação"_
+_"minha ideia seria colocar mesmo as imagens das portas lógicas e codigos em seus respectivo lugar em toda a documentação"_
 
 
 
