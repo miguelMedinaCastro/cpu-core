@@ -4,3 +4,4 @@
 * [Fundamentos](fundamentos.md)
 * [Preparando o Ambiente](preparando-o-ambiente.md)
 * [Módulos](modulos.md)
+* [Full Adder](full-adder.md)

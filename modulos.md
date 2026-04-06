@@ -1,5 +1,6 @@
 ---
 description: 'Módulos da CPU: Entendendo a Arquitetura por Dentro'
+icon: computer
 ---
 
 # Módulos
@@ -10,25 +11,7 @@ Nesta página, vamos detalhar os principais módulos que compõem uma cpu e ente
 
 ***
 
-### 1. Somador Completo (_Full Adder_)
 
-
-
-_"vou colocar as imagens e os codigos nos exemplos, mandando apenas para pegar o feedback e também a minha ideia seria que cada módulo aqui tivesse sua página para eu deixar bem mais completo, ainda em construção"_
-
-
-
-O Somador Completo é o coração da matemática dentro da CPU. Antes de somarmos 16 bits de uma vez, precisamos saber somar 1 único bit. O _Full Adder_ recebe três entradas:
-
-* A e B: Os dois bits que você quer somar.
-* Cin (Carry-In): O "vai um" da soma anterior.
-
-E ele gera duas saídas:
-
-* S (Soma): O resultado da soma atual.
-* Cout (Carry-Out): O "vai um" que será passado para a próxima casa decimal (ou melhor, binária).
-
-Para construir um somador de 16 bits, nós simplesmente "colamos" 16 desses módulos um do lado do outro, conectando o `Cout` de um no `Cin` do próximo (arquitetura conhecida como _Ripple Carry Adder_).
 
 ### 2. Unidade Lógica e Aritmética (ULA / ALU)
 
