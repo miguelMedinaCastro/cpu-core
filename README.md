@@ -1,10 +1,12 @@
+---
+icon: person-waving
+---
+
 # Bem-vindo à CPU Didática!
 
 ### Visão Geral
 
-Neste tutorial, você irá aprender desde os primeiros passos em VHDL até a simulação de uma CPU de 16 bits completa. O objetivo deste projeto é servir como uma porta de entrada para o estudo de arquitetura de computadores, permitindo que qualquer pessoa consiga acompanhar mesmo com pouca experiência prévia. Este tutorial é voltado para:
-
-* Estudantes que querem entender como uma CPU funciona na prática.
+Neste tutorial, você irá aprender desde os primeiros passos em VHDL até a simulação de uma CPU de 16 bits completa. O objetivo deste projeto é servir como uma porta de entrada para o estudo de arquitetura de computadores, permitindo que qualquer pessoa consiga acompanhar mesmo com pouca experiência prévia. Este tutorial é voltado para estudantes que querem entender como uma CPU funciona na prática.
 
 Ao final deste tutorial, você será capaz de:
 
@@ -13,22 +15,20 @@ Ao final deste tutorial, você será capaz de:
 * Compilar e simular circuitos digitais;
 * Explorar e modificar módulos da CPU.
 
-
-
 ### Antes de começar
 
 Para que você consiga simular a nossa CPU e ver os gráficos funcionando na prática, você precisará preparar o seu ambiente.
 
-Conhecimentos prévios esperados:
+Conhecimentos prévios:
 
 * Familiaridade básica com terminal (linha de comando).
 
 Ferramentas e Softwares necessários:
 
-* GHDL: Um simulador de código aberto para compilar e rodar a linguagem VHDL.
-* GTKWave: Um visualizador de formas de onda (waveform) essencial para enxergarmos os sinais da CPU no tempo.
-* Git: Para baixar o código do nosso repositório oficial.
-* Editor de código de sua preferência.
+* GHDL: Um simulador de código aberto para compilar e rodar a linguagem VHDL;
+* GTKWave: Um visualizador de formas de onda (waveform) essencial para visualizar os sinais da CPU no tempo;
+* Git: Para baixar o código do nosso repositório oficial;
+* Editor de código de sua preferência, nesse tutorial será utilizado Visual Studio Code.
 
 ### Como usar este tutorial
 
