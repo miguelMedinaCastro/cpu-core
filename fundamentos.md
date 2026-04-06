@@ -1,5 +1,5 @@
 ---
-description: 'Módulo de Fundamentos: Portas Lógicas e VHDL'
+description: 'Módulo de Fundamentos: CPU, Portas Lógicas e VHDL'
 icon: book
 ---
 
