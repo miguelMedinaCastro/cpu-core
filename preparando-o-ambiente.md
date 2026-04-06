@@ -1,5 +1,6 @@
 ---
 description: 'Preparando o Ambiente: GHDL, GTKWave e Makefiles'
+icon: screwdriver-wrench
 ---
 
 # Preparando o Ambiente
@@ -12,19 +13,19 @@ Abaixo, você vai conhecer o trio de ferramentas que usaremos neste projeto e co
 
 ### 1. As Nossas Ferramentas de Trabalho
 
-#### GHDL: O Simulador
+#### GHDL
 
 O GHDL é um simulador de código aberto para a linguagem VHDL. O trabalho dele é ler todos os nossos arquivos de texto (onde descrevemos as portas lógicas e conexões), verificar se a sintaxe está correta e criar um modelo executável da nossa CPU.
 
 É ele quem faz a "matemática" nos bastidores, calculando em que momento cada sinal elétrico muda de `0` para `1`.
 
-#### GTKWave: Os "Óculos" do Hardware
+#### GTKWave
 
 Quando o GHDL termina a simulação, ele cospe um arquivo cheio de dados de tempo e sinais elétricos (geralmente com a extensão `.vcd` ou `.ghw`). Ler isso em formato de texto é impossível para um ser humano. É aí que entra o GTKWave.
 
 Ele é um visualizador de formas de onda (waveforms). Com ele, você consegue ver gráficos coloridos mostrando exatamente o que estava acontecendo dentro de cada registrador e de cada porta lógica em qualquer milissegundo da simulação.
 
-#### Makefile: O Seu Assistente Pessoal
+#### Makefile
 
 Para rodar o GHDL, compilar cada arquivo individualmente e depois abrir o GTKWave, você teria que digitar vários comandos longos e chatos no terminal toda vez que fizesse uma pequena alteração no código.
 
@@ -34,7 +35,7 @@ O Makefile (usado pela ferramenta `make`) serve para automatizar isso. Nós já 
 
 ### 2. Instalando os Softwares
 
-Para rodar o projeto, você precisará instalar essas ferramentas no seu sistema operacional. A forma mais fácil de fazer isso é usando um ambiente Linux (como o Ubuntu, ou o WSL se você estiver no Windows).
+Para rodar o projeto, você precisará instalar essas ferramentas no seu sistema operacional. A forma mais fácil de fazer isso é usando um ambiente Linux (distros derivadas do Debian como Ubuntu, ou o WSL se você estiver no Windows).
 
 Abra o seu terminal e digite o seguinte comando para instalar o pacote completo:
 
