@@ -33,11 +33,11 @@ Existem algumas portas básicas que fazem operações simples com a eletricidade
 
 * Porta AND: Só emite sinal `1` na saída se todas as entradas forem `1`. É como um sistema de segurança que só destrava a porta se o cartão _E_ a senha estiverem corretos.
 
-<figure><img src=".gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
 * Porta OR: Emite sinal `1` se pelo menos uma das entradas for `1`.
 
-<figure><img src=".gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 * Porta NOT: Serve para inverter o sinal. Se entra `1`, sai `0`. Se entra `0`, sai `1`.
 
