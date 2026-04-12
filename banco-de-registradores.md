@@ -1,5 +1,5 @@
 ---
-description: O armário de memória ultrarrápida da CPU.
+description: O "armário" de memória ultrarrápida da CPU.
 ---
 
 # Banco de Registradores
