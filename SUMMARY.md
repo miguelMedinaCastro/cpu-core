@@ -6,3 +6,4 @@
 * [Módulos](modulos.md)
 * [Full Adder](full-adder.md)
 * [Instruction Memory](instruction-memory.md)
+* [Banco de Registradores](banco-de-registradores.md)
