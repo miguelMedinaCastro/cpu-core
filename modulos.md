@@ -13,11 +13,9 @@ Abaixo estão os principais módulos que compõem a nossa CPU. Clique em qualque
 
 ***
 
-### Registrador
+### [full-adder.md](full-adder.md "mention")
 
 O elemento de memória mais básico da CPU. Construído com Flip-Flops tipo D, ele armazena 16 bits de informação e só atualiza seu valor na borda de subida do clock — garantindo que os dados não mudem em momentos indevidos.
-
-***
 
 ### Banco de Registradores
 
