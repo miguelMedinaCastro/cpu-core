@@ -6,4 +6,5 @@
 * [Módulos](modulos.md)
 * [Somador](somador.md)
 * [Memória de Instruções](memoria-de-instrucoes.md)
+* [Decodificador](decodificador.md)
 * [Banco de Registradores](banco-de-registradores.md)
