@@ -10,4 +10,5 @@
 * [Memória de Dados](memoria-de-dados.md)
 * [Multiplexador](multiplexador.md)
 * [Registrador](registrador.md)
+* [ULA - Unidade Lógica e Aritmética](ula-unidade-logica-e-aritmetica.md)
 * [Banco de Registradores](banco-de-registradores.md)
