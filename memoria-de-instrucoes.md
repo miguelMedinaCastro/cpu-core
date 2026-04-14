@@ -1,8 +1,9 @@
 ---
-description: Descrição completa de Instruction Memory
+description: Descrição completa de memória de instruções
+icon: readme
 ---
 
-# Instruction Memory
+# Memória de Instruções
 
 > A ROM que guarda o programa a ser executado.
 
@@ -17,7 +18,7 @@ Diferente da Memória de Dados (que pode ser lida e escrita durante a execução
 O funcionamento da Memória de Instruções está ligado diretamente ao primeiro estágio do ciclo da CPU:
 
 1. Endereço de entrada: O Program Counter envia o endereço da próxima instrução a ser buscada.
-2. Leitura síncrona: Na borda de subida do clock, com o sinal de leitura (leitura `= '1'`) ativo, a memória acessa internamente o vetor `mem` no índice indicado pelo endereço.
+2. Leitura síncrona: Na borda de subida do clock, com o sinal de leitura (`leitura = '1'`) ativo, a memória acessa internamente o vetor `mem` no índice indicado pelo endereço.
 3. Saída da instrução: O valor de 16 bits armazenado naquela posição é disponibilizado na saída `saida_dado`.
 4. Decodificação: Esse valor vai direto para o Decodificador, que interpreta os bits e aciona os controles corretos para toda a CPU.
 

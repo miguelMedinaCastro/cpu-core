@@ -5,5 +5,5 @@
 * [Preparando o Ambiente](preparando-o-ambiente.md)
 * [Módulos](modulos.md)
 * [Somador](somador.md)
-* [Instruction Memory](instruction-memory.md)
+* [Memória de Instruções](memoria-de-instrucoes.md)
 * [Banco de Registradores](banco-de-registradores.md)
