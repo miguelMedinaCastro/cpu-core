@@ -1,3 +1,7 @@
+---
+icon: microchip
+---
+
 # ULA - Unidade Lógica e Aritmética
 
 > O motor de processamento da CPU.

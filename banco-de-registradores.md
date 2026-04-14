@@ -1,5 +1,6 @@
 ---
 description: O "armário" de memória ultrarrápida da CPU.
+icon: vault
 ---
 
 # Banco de Registradores

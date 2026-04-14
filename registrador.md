@@ -1,3 +1,7 @@
+---
+icon: bolt
+---
+
 # Registrador
 
 > O elemento de memória mais simples e rápido de toda a CPU.

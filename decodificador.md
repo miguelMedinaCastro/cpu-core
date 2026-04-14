@@ -1,5 +1,6 @@
 ---
 description: Descrição completa do decodificador
+icon: think-peaks
 ---
 
 # Decodificador
@@ -30,7 +31,7 @@ Toda instrução da CPU passa por quatro etapas, e o Decodificador participa ati
 | `ula_op`  | ULA                    | Define a operação a executar (soma, AND, …)   |
 | `reg_WE`  | Banco de Registradores | Autoriza escrita no registrador de destino    |
 | `mem_WE`  | Memória de Dados       | Autoriza escrita na RAM (instrução `store`)   |
-| `mux_sel` | MUX de writeback       | Escolhe entre resultado da ULA ou dado da RAM |
+| `mux_sel` | MUX                    | Escolhe entre resultado da ULA ou dado da RAM |
 | `jump`    | Program Counter        | Sinaliza desvio para novo endereço            |
 
 ***
