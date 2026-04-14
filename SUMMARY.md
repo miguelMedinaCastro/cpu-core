@@ -4,6 +4,6 @@
 * [Fundamentos](fundamentos.md)
 * [Preparando o Ambiente](preparando-o-ambiente.md)
 * [Módulos](modulos.md)
-* [Full Adder](full-adder.md)
+* [Somador](somador.md)
 * [Instruction Memory](instruction-memory.md)
 * [Banco de Registradores](banco-de-registradores.md)

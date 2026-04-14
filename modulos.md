@@ -13,7 +13,7 @@ Abaixo estão os principais módulos que compõem a nossa CPU. Clique em qualque
 
 ***
 
-### [full-adder.md](full-adder.md "mention")
+### [somador.md](somador.md "mention")
 
 O elemento de memória mais básico da CPU. Construído com Flip-Flops tipo D, ele armazena 16 bits de informação e só atualiza seu valor na borda de subida do clock — garantindo que os dados não mudem em momentos indevidos.
 
