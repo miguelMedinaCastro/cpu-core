@@ -9,4 +9,5 @@
 * [Decodificador](decodificador.md)
 * [Memória de Dados](memoria-de-dados.md)
 * [Multiplexador](multiplexador.md)
+* [Registrador](registrador.md)
 * [Banco de Registradores](banco-de-registradores.md)
