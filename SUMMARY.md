@@ -8,4 +8,5 @@
 * [Memória de Instruções](memoria-de-instrucoes.md)
 * [Decodificador](decodificador.md)
 * [Memória de Dados](memoria-de-dados.md)
+* [Multiplexador](multiplexador.md)
 * [Banco de Registradores](banco-de-registradores.md)
