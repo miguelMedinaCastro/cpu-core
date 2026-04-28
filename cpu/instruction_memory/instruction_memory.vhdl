@@ -10,10 +10,8 @@ entity memory_impl is
   );
   port (
     addr   : in std_logic_vector(X - 1 downto 0);
-    -- data_i : in std_logic_vector(Y - 1 downto 0);
     clk    : in std_logic;
     r      : in std_logic;
-    -- w      : in std_logic;
     data_o : out std_logic_vector(Y - 1 downto 0)
   );
 end memory_impl;
@@ -34,9 +32,6 @@ begin
   process (clk)
   begin
     if rising_edge(clk) then
-      -- if w = '1' then
-      --   mem(to_integer(unsigned(addr))) <= data_i;
-        -- data_i <= mem(to_integer(unsigned(addr)));
       if r = '1' then
         data_o <= mem(to_integer(unsigned(addr)));
       end if;

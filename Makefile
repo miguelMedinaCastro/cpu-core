@@ -48,8 +48,15 @@ ula:
 	ghdl -a $(FLAGS) $(SRC_DIR)/ULA/ula_Nbits_tb.vhdl 
 	ghdl -e $(FLAGS) ula_Nbits_tb
 	ghdl -r $(FLAGS) ula_Nbits_tb --vcd=ula.vcd
+
+
+fsm:
+	ghdl -a $(FLAGS) $(SRC_DIR)/FSM/fsm.vhdl
+	ghdl -a $(FLAGS) $(SRC_DIR)/FSM/fsm_tb.vhdl 
+	ghdl -e $(FLAGS) fsm_tb
+	ghdl -r $(FLAGS) fsm_tb --wave=fsm.ghw
 wave:
-	gtkwave ula.vcd
+	gtkwave fsm.ghw
 	
 clean:
 	rm -f *.cf *.vcd $(TB)
