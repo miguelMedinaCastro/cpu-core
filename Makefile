@@ -15,7 +15,7 @@ endef
 all: help
 
 fsm:
-	$(call ghdl_commands,fsm_tb,cpu/FSM/fsm.vhdl testbench/fsm_tb.vhdl)
+	$(call ghdl_commands,fsm_tb,bloco_cpu_fsm/fsm_1.vhdl bloco_cpu_fsm/fsm_tb.vhdl)
 
 ula:
 	$(call ghdl_commands,ula_Nbits_tb,cpu/ULA/ula_Nbits.vhdl cpu/ULA/ula_Nbits_tb.vhdl)
