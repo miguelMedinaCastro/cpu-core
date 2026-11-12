@@ -1,0 +1,276 @@
+
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.NUMERIC_STD.ALL;
+USE WORK.MEM_PKG.ALL;
+
+
+ENTITY CPU_FPGA IS PORT (
+
+      ESTADO_FPGA   :  OUT STD_LOGIC_VECTOR(06 DOWNTO 0); -- DISPLAY 7 SEGMENTOS
+      OPCODE_FPGA   :  OUT STD_LOGIC_VECTOR(06 DOWNTO 0); -- DISPLAY 7 SEGMENTOS
+      PC_FPGA       :  OUT STD_LOGIC_VECTOR(13 DOWNTO 0); -- DISPLAY 7 SEGMENTOS (2X)
+
+      WRPC_FPGA     :  OUT STD_LOGIC;                     -- LED
+      WRIR_FPGA     :  OUT STD_LOGIC;                     -- LED
+      WRREG_FPGA    :  OUT STD_LOGIC;                     -- LED
+      WRMEM_FPGA    :  OUT STD_LOGIC;                     -- LED
+      RDMEM_FPGA    :  OUT STD_LOGIC;                     -- LED
+      MUXPC_FPGA    :  OUT STD_LOGIC;                     -- LED
+      MUXAREG_FPGA  :  OUT STD_LOGIC;                     -- LED
+      MUXDREG_FPGA  :  OUT STD_LOGIC_VECTOR(01 DOWNTO 0); -- LED
+      OPULA_FPGA    :  OUT STD_LOGIC_VECTOR(02 DOWNTO 0); -- LED
+
+      FLAG_C_FPGA   :  OUT STD_LOGIC;                     -- LED
+      FLAG_V_FPGA   :  OUT STD_LOGIC;                     -- LED
+      FLAG_N_FPGA   :  OUT STD_LOGIC;                     -- LED
+      FLAG_Z_FPGA   :  OUT STD_LOGIC;                     -- LED
+
+      ADDR_FPGA     :  IN  STD_LOGIC_VECTOR(07 DOWNTO 0); -- CHAVES
+      DATA_FPGA     :  OUT STD_LOGIC_VECTOR(27 DOWNTO 0); -- DISPLAY 7 SEGMENTOS (4X)
+
+      RST           :  IN  STD_LOGIC;                     -- CHAVE
+      CLK           :  IN  STD_LOGIC);                    -- CLOCK
+
+END CPU_FPGA;
+
+
+ARCHITECTURE CPU_FPGA OF CPU_FPGA IS
+
+   SIGNAL CLK_INTERNO          :  STD_LOGIC := '0';
+
+   SIGNAL ESTADO_FPGA_INTERNO  :  STD_LOGIC_VECTOR(03 DOWNTO 0) := (OTHRES => '0');
+   SIGNAL OPCODE_FPGA_INTERNO  :  STD_LOGIC_VECTOR(03 DOWNTO 0) := (OTHRES => '0');
+   SIGNAL PC_FPGA_INTERNO      :  STD_LOGIC_VECTOR(07 DOWNTO 0) := (OTHRES => '0');
+   SIGNAL DATA_FPGA_INTERNO    :  STD_LOGIC_VECTOR(15 DOWNTO 0) := (OTHRES => '0');
+
+   SIGNAL CONTADOR             :  STD_LOGIC_VECTOR(26 DOWNTO 0) := "000000000000000000000000000";
+   SIGNAL VALORINICIAL         :  STD_LOGIC_VECTOR(26 DOWNTO 0) := "000000000000000000000000000";
+   SIGNAL VALORFINAL           :  STD_LOGIC_VECTOR(26 DOWNTO 0) := "110000000000000000000000000";
+
+
+BEGIN
+
+   -- INSTANCIA DA CPU
+   DUT_CPU:  ENTITY  WORK.CPU
+      PORT MAP(
+           ESTADO_FPGA   =>  ESTADO_FPGA_INTERNO,
+           OPCODE_FPGA   =>  OPCODE_FPGA_INTERNO,
+           PC_FPGA       =>  PC_FPGA_INTERNO,
+
+           WRPC_FPGA     =>  WRPC_FPGA,
+           WRIR_FPGA     =>  WRIR_FPGA,
+           WRREG_FPGA    =>  WRREG_FPGA,
+           WRMEM_FPGA    =>  WRMEM_FPGA,
+           RDMEM_FPGA    =>  RDMEM_FPGA,
+           MUXPC_FPGA    =>  MUXPC_FPGA,
+           MUXAREG_FPGA  =>  MUXAREG_FPGA,
+           MUXDREG_FPGA  =>  MUXDREG_FPGA,
+           OPULA_FPGA    =>  OPULA_FPGA,
+
+           FLAG_C_FPGA   =>  FLAG_C_FPGA,
+           FLAG_V_FPGA   =>  FLAG_V_FPGA,
+           FLAG_N_FPGA   =>  FLAG_N_FPGA,
+           FLAG_Z_FPGA   =>  FLAG_Z_FPGA,
+
+           ADDR_FPGA     =>  ADDR_FPGA,
+           DATA_FPGA     =>  DATA_INTERNO,
+
+           CLK           =>  CLK_INTERNO,
+           RST           =>  RST);
+
+
+
+   -- DISPLAY 7 SEGMENTOS - ESTADO DA FSM
+   ESTADO_FPGA  <=                                             ---------------------------
+         "0111111"  WHEN  ESTADO_FPGA_INTERNO = "0000"  ELSE   -- BUSCA             BD [0]  
+         "0000110"  WHEN  ESTADO_FPGA_INTERNO = "0001"  ELSE   -- DECODE               [1]
+                                                               ---------------------------
+         "1011011"  WHEN  ESTADO_FPGA_INTERNO = "0010"  ELSE   -- RD_MEM           LDA [2]  
+         "1001111"  WHEN  ESTADO_FPGA_INTERNO = "0011"  ELSE   -- WR_REG               [3]
+                                                               ---------------------------
+         "1100110"  WHEN  ESTADO_FPGA_INTERNO = "0100"  ELSE   -- WR_REG2         LDAI [4]
+                                                               ---------------------------
+         "1101101"  WHEN  ESTADO_FPGA_INTERNO = "0101"  ELSE   -- RD_REG           STA [5]
+         "1111101"  WHEN  ESTADO_FPGA_INTERNO = "0110"  ELSE   -- WR_MEM               [6]
+                                                               ---------------------------
+         "0000111"  WHEN  ESTADO_FPGA_INTERNO = "0111"  ELSE   -- RD_REG2          ULA [7]
+         "1111111"  WHEN  ESTADO_FPGA_INTERNO = "1000"  ELSE   -- ULA_EXEC             [8]
+         "1101111"  WHEN  ESTADO_FPGA_INTERNO = "1001"  ELSE   -- WR_REG3              [9]
+                                                               ---------------------------
+         "1110111"  WHEN  ESTADO_FPGA_INTERNO = "1010"  ELSE   -- WR_PC           JUMP [A]
+                                                               ---------------------------
+         "1111100"  WHEN  ESTADO_FPGA_INTERNO = "1011"  ELSE   -- FIM              FIM [B]
+                                                               ---------------------------
+         "0000000";
+
+
+   -- DISPLAY 7 SEGMENTOS - OPCODE DA INSTRUCAO
+   OPCODE_FPGA  <=
+         "0000110"  WHEN  OPCODE_FPGA_INTERNO = "0001"  ELSE   -- LDA   1
+         "1011011"  WHEN  OPCODE_FPGA_INTERNO = "0010"  ELSE   -- LDAI  2
+         "1001111"  WHEN  OPCODE_FPGA_INTERNO = "0011"  ELSE   -- STA   3
+         "1100110"  WHEN  OPCODE_FPGA_INTERNO = "0100"  ELSE   -- ADD   4
+         "1101101"  WHEN  OPCODE_FPGA_INTERNO = "0101"  ELSE   -- SUB   5
+         "1111101"  WHEN  OPCODE_FPGA_INTERNO = "0110"  ELSE   -- AND   6
+         "0000111"  WHEN  OPCODE_FPGA_INTERNO = "0111"  ELSE   -- OR    7
+         "1111111"  WHEN  OPCODE_FPGA_INTERNO = "1000"  ELSE   -- NOT   8
+         "1101111"  WHEN  OPCODE_FPGA_INTERNO = "1001"  ELSE   -- JZ    9
+         "1111100"  WHEN  OPCODE_FPGA_INTERNO = "1011"  ELSE   -- JN    B
+         "0111001"  WHEN  OPCODE_FPGA_INTERNO = "1100"  ELSE   -- JMP   C
+         "1011110"  WHEN  OPCODE_FPGA_INTERNO = "1101"  ELSE   -- HLT   D
+         "0000000";
+
+
+   -- DISPLAY 7 SEGMENTOS - PC (PARTE 1)
+   PC_FPGA(13 DOWNTO 70)  <= 
+         "0111111"  WHEN  PC_FPGA_INTERNO(07 DOWNTO 04) = "0000"  ELSE   --  0
+         "0000110"  WHEN  PC_FPGA_INTERNO(07 DOWNTO 04) = "0001"  ELSE   --  1
+         "1011011"  WHEN  PC_FPGA_INTERNO(07 DOWNTO 04) = "0010"  ELSE   --  2
+         "1001111"  WHEN  PC_FPGA_INTERNO(07 DOWNTO 04) = "0011"  ELSE   --  3
+         "1100110"  WHEN  PC_FPGA_INTERNO(07 DOWNTO 04) = "0100"  ELSE   --  4
+         "1101101"  WHEN  PC_FPGA_INTERNO(07 DOWNTO 04) = "0101"  ELSE   --  5
+         "1111101"  WHEN  PC_FPGA_INTERNO(07 DOWNTO 04) = "0110"  ELSE   --  6
+         "0000111"  WHEN  PC_FPGA_INTERNO(07 DOWNTO 04) = "0111"  ELSE   --  7
+         "1111111"  WHEN  PC_FPGA_INTERNO(07 DOWNTO 04) = "1000"  ELSE   --  8
+         "1101111"  WHEN  PC_FPGA_INTERNO(07 DOWNTO 04) = "1001"  ELSE   --  9
+         "1110111"  WHEN  PC_FPGA_INTERNO(07 DOWNTO 04) = "1010"  ELSE   --  A
+         "1111100"  WHEN  PC_FPGA_INTERNO(07 DOWNTO 04) = "1011"  ELSE   --  B
+         "0111001"  WHEN  PC_FPGA_INTERNO(07 DOWNTO 04) = "1100"  ELSE   --  C
+         "1011110"  WHEN  PC_FPGA_INTERNO(07 DOWNTO 04) = "1101"  ELSE   --  D
+         "1111001"  WHEN  PC_FPGA_INTERNO(07 DOWNTO 04) = "1110"  ELSE   --  E
+         "1110001"  WHEN  PC_FPGA_INTERNO(07 DOWNTO 04) = "1111"  ELSE   --  F
+         "0000000";
+
+
+   -- DISPLAY 7 SEGMENTOS - PC (PARTE 2)
+   PC_FPGA(06 DOWNTO 00)  <=
+         "0111111"  WHEN  PC_FPGA_INTERNO(03 DOWNTO 00) = "0000"  ELSE   --  0
+         "0000110"  WHEN  PC_FPGA_INTERNO(03 DOWNTO 00) = "0001"  ELSE   --  1
+         "1011011"  WHEN  PC_FPGA_INTERNO(03 DOWNTO 00) = "0010"  ELSE   --  2
+         "1001111"  WHEN  PC_FPGA_INTERNO(03 DOWNTO 00) = "0011"  ELSE   --  3
+         "1100110"  WHEN  PC_FPGA_INTERNO(03 DOWNTO 00) = "0100"  ELSE   --  4
+         "1101101"  WHEN  PC_FPGA_INTERNO(03 DOWNTO 00) = "0101"  ELSE   --  5
+         "1111101"  WHEN  PC_FPGA_INTERNO(03 DOWNTO 00) = "0110"  ELSE   --  6
+         "0000111"  WHEN  PC_FPGA_INTERNO(03 DOWNTO 00) = "0111"  ELSE   --  7
+         "1111111"  WHEN  PC_FPGA_INTERNO(03 DOWNTO 00) = "1000"  ELSE   --  8
+         "1101111"  WHEN  PC_FPGA_INTERNO(03 DOWNTO 00) = "1001"  ELSE   --  9
+         "1110111"  WHEN  PC_FPGA_INTERNO(03 DOWNTO 00) = "1010"  ELSE   --  A
+         "1111100"  WHEN  PC_FPGA_INTERNO(03 DOWNTO 00) = "1011"  ELSE   --  B
+         "0111001"  WHEN  PC_FPGA_INTERNO(03 DOWNTO 00) = "1100"  ELSE   --  C
+         "1011110"  WHEN  PC_FPGA_INTERNO(03 DOWNTO 00) = "1101"  ELSE   --  D
+         "1111001"  WHEN  PC_FPGA_INTERNO(03 DOWNTO 00) = "1110"  ELSE   --  E
+         "1110001"  WHEN  PC_FPGA_INTERNO(03 DOWNTO 00) = "1111"  ELSE   --  F
+         "0000000";
+
+
+   -- DISPLAY 7 SEGMENTOS - DADOS MEMORIA (PARTE 1)
+   DATA_FPGA(27 DOWNTO 21)  <= 
+         "0111111"  WHEN  DATA_FPGA_INTERNO(15 DOWNTO 12) = "0000"  ELSE   --  0
+         "0000110"  WHEN  DATA_FPGA_INTERNO(15 DOWNTO 12) = "0001"  ELSE   --  1
+         "1011011"  WHEN  DATA_FPGA_INTERNO(15 DOWNTO 12) = "0010"  ELSE   --  2
+         "1001111"  WHEN  DATA_FPGA_INTERNO(15 DOWNTO 12) = "0011"  ELSE   --  3
+         "1100110"  WHEN  DATA_FPGA_INTERNO(15 DOWNTO 12) = "0100"  ELSE   --  4
+         "1101101"  WHEN  DATA_FPGA_INTERNO(15 DOWNTO 12) = "0101"  ELSE   --  5
+         "1111101"  WHEN  DATA_FPGA_INTERNO(15 DOWNTO 12) = "0110"  ELSE   --  6
+         "0000111"  WHEN  DATA_FPGA_INTERNO(15 DOWNTO 12) = "0111"  ELSE   --  7
+         "1111111"  WHEN  DATA_FPGA_INTERNO(15 DOWNTO 12) = "1000"  ELSE   --  8
+         "1101111"  WHEN  DATA_FPGA_INTERNO(15 DOWNTO 12) = "1001"  ELSE   --  9
+         "1110111"  WHEN  DATA_FPGA_INTERNO(15 DOWNTO 12) = "1010"  ELSE   --  A
+         "1111100"  WHEN  DATA_FPGA_INTERNO(15 DOWNTO 12) = "1011"  ELSE   --  B
+         "0111001"  WHEN  DATA_FPGA_INTERNO(15 DOWNTO 12) = "1100"  ELSE   --  C
+         "1011110"  WHEN  DATA_FPGA_INTERNO(15 DOWNTO 12) = "1101"  ELSE   --  D
+         "1111001"  WHEN  DATA_FPGA_INTERNO(15 DOWNTO 12) = "1110"  ELSE   --  E
+         "1110001"  WHEN  DATA_FPGA_INTERNO(15 DOWNTO 12) = "1111"  ELSE   --  F
+         "0000000";
+
+
+   -- DISPLAY 7 SEGMENTOS - DADOS MEMORIA (PARTE 2)
+   DATA_FPGA(20 DOWNTO 14)  <=
+         "0111111"  WHEN  DATA_FPGA_INTERNO(11 DOWNTO 08) = "0000"  ELSE   --  0
+         "0000110"  WHEN  DATA_FPGA_INTERNO(11 DOWNTO 08) = "0001"  ELSE   --  1
+         "1011011"  WHEN  DATA_FPGA_INTERNO(11 DOWNTO 08) = "0010"  ELSE   --  2
+         "1001111"  WHEN  DATA_FPGA_INTERNO(11 DOWNTO 08) = "0011"  ELSE   --  3
+         "1100110"  WHEN  DATA_FPGA_INTERNO(11 DOWNTO 08) = "0100"  ELSE   --  4
+         "1101101"  WHEN  DATA_FPGA_INTERNO(11 DOWNTO 08) = "0101"  ELSE   --  5
+         "1111101"  WHEN  DATA_FPGA_INTERNO(11 DOWNTO 08) = "0110"  ELSE   --  6
+         "0000111"  WHEN  DATA_FPGA_INTERNO(11 DOWNTO 08) = "0111"  ELSE   --  7
+         "1111111"  WHEN  DATA_FPGA_INTERNO(11 DOWNTO 08) = "1000"  ELSE   --  8
+         "1101111"  WHEN  DATA_FPGA_INTERNO(11 DOWNTO 08) = "1001"  ELSE   --  9
+         "1110111"  WHEN  DATA_FPGA_INTERNO(11 DOWNTO 08) = "1010"  ELSE   --  A
+         "1111100"  WHEN  DATA_FPGA_INTERNO(11 DOWNTO 08) = "1011"  ELSE   --  B
+         "0111001"  WHEN  DATA_FPGA_INTERNO(11 DOWNTO 08) = "1100"  ELSE   --  C
+         "1011110"  WHEN  DATA_FPGA_INTERNO(11 DOWNTO 08) = "1101"  ELSE   --  D
+         "1111001"  WHEN  DATA_FPGA_INTERNO(11 DOWNTO 08) = "1110"  ELSE   --  E
+         "1110001"  WHEN  DATA_FPGA_INTERNO(11 DOWNTO 08) = "1111"  ELSE   --  F
+         "0000000";
+
+
+   -- DISPLAY 7 SEGMENTOS - DADOS MEMORIA (PARTE 3)
+   DATA_FPGA(13 DOWNTO 70)  <= 
+         "0111111"  WHEN  DATA_FPGA_INTERNO(07 DOWNTO 04) = "0000"  ELSE   --  0
+         "0000110"  WHEN  DATA_FPGA_INTERNO(07 DOWNTO 04) = "0001"  ELSE   --  1
+         "1011011"  WHEN  DATA_FPGA_INTERNO(07 DOWNTO 04) = "0010"  ELSE   --  2
+         "1001111"  WHEN  DATA_FPGA_INTERNO(07 DOWNTO 04) = "0011"  ELSE   --  3
+         "1100110"  WHEN  DATA_FPGA_INTERNO(07 DOWNTO 04) = "0100"  ELSE   --  4
+         "1101101"  WHEN  DATA_FPGA_INTERNO(07 DOWNTO 04) = "0101"  ELSE   --  5
+         "1111101"  WHEN  DATA_FPGA_INTERNO(07 DOWNTO 04) = "0110"  ELSE   --  6
+         "0000111"  WHEN  DATA_FPGA_INTERNO(07 DOWNTO 04) = "0111"  ELSE   --  7
+         "1111111"  WHEN  DATA_FPGA_INTERNO(07 DOWNTO 04) = "1000"  ELSE   --  8
+         "1101111"  WHEN  DATA_FPGA_INTERNO(07 DOWNTO 04) = "1001"  ELSE   --  9
+         "1110111"  WHEN  DATA_FPGA_INTERNO(07 DOWNTO 04) = "1010"  ELSE   --  A
+         "1111100"  WHEN  DATA_FPGA_INTERNO(07 DOWNTO 04) = "1011"  ELSE   --  B
+         "0111001"  WHEN  DATA_FPGA_INTERNO(07 DOWNTO 04) = "1100"  ELSE   --  C
+         "1011110"  WHEN  DATA_FPGA_INTERNO(07 DOWNTO 04) = "1101"  ELSE   --  D
+         "1111001"  WHEN  DATA_FPGA_INTERNO(07 DOWNTO 04) = "1110"  ELSE   --  E
+         "1110001"  WHEN  DATA_FPGA_INTERNO(07 DOWNTO 04) = "1111"  ELSE   --  F
+         "0000000";
+
+
+   -- DISPLAY 7 SEGMENTOS - DADOS MEMORIA (PARTE 4)
+   DATA_FPGA(06 DOWNTO 00)  <=
+         "0111111"  WHEN  DATA_FPGA_INTERNO(03 DOWNTO 00) = "0000"  ELSE   --  0
+         "0000110"  WHEN  DATA_FPGA_INTERNO(03 DOWNTO 00) = "0001"  ELSE   --  1
+         "1011011"  WHEN  DATA_FPGA_INTERNO(03 DOWNTO 00) = "0010"  ELSE   --  2
+         "1001111"  WHEN  DATA_FPGA_INTERNO(03 DOWNTO 00) = "0011"  ELSE   --  3
+         "1100110"  WHEN  DATA_FPGA_INTERNO(03 DOWNTO 00) = "0100"  ELSE   --  4
+         "1101101"  WHEN  DATA_FPGA_INTERNO(03 DOWNTO 00) = "0101"  ELSE   --  5
+         "1111101"  WHEN  DATA_FPGA_INTERNO(03 DOWNTO 00) = "0110"  ELSE   --  6
+         "0000111"  WHEN  DATA_FPGA_INTERNO(03 DOWNTO 00) = "0111"  ELSE   --  7
+         "1111111"  WHEN  DATA_FPGA_INTERNO(03 DOWNTO 00) = "1000"  ELSE   --  8
+         "1101111"  WHEN  DATA_FPGA_INTERNO(03 DOWNTO 00) = "1001"  ELSE   --  9
+         "1110111"  WHEN  DATA_FPGA_INTERNO(03 DOWNTO 00) = "1010"  ELSE   --  A
+         "1111100"  WHEN  DATA_FPGA_INTERNO(03 DOWNTO 00) = "1011"  ELSE   --  B
+         "0111001"  WHEN  DATA_FPGA_INTERNO(03 DOWNTO 00) = "1100"  ELSE   --  C
+         "1011110"  WHEN  DATA_FPGA_INTERNO(03 DOWNTO 00) = "1101"  ELSE   --  D
+         "1111001"  WHEN  DATA_FPGA_INTERNO(03 DOWNTO 00) = "1110"  ELSE   --  E
+         "1110001"  WHEN  DATA_FPGA_INTERNO(03 DOWNTO 00) = "1111"  ELSE   --  F
+         "0000000";
+
+
+   -- PROCESSO DIVISOR DE CLOCK
+   PROCESS(CLK, RST) BEGIN
+
+      IF RST = '1' THEN
+
+            CONTADOR <= VALORINICIAL;
+            CLK_INTERNO <= '0';
+
+      ELSIF CLK'EVENT AND CLK = '1' THEN
+
+            CONTADOR <= CONTADOR + 1;
+
+            IF CONTADOR = VALORFINAL THEN
+                  CONTADOR    <= VALORINICIAL;
+                  CLK_INTERNO <= NOT CLK_INTERNO;
+            END IF;
+
+      END IF;
+
+    END PROCESS;
+
+
+
+END ARCHITECTURE;
+
+

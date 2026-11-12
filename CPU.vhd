@@ -23,27 +23,29 @@ entity CPU is
       NBits_OPco  :  natural := 005);  -- Num. de Bits de OpCode
    port (
 
-      -- VERIFICACAO ---------------------------------------------------------------------
-      ESTADO_FSM_FPGA   :  OUT STD_LOGIC_VECTOR(3 DOWNTO 0);  -- 1 DISPLAY DE 7 SEGMENTOS
-      OPCODE_OUT_FPGA   :  OUT STD_LOGIC_VECTOR(3 DOWNTO 0);  -- 1 DISPLAY DE 7 SEGMENTOS
+-- VERIFICACAO ---------------------------------------------------------------------------
+      ESTADO_FPGA   :  OUT STD_LOGIC_VECTOR(03 DOWNTO 0);
+      OPCODE_FPGA   :  OUT STD_LOGIC_VECTOR(03 DOWNTO 0);
+      PC_FPGA       :  OUT STD_LOGIC_VECTOR(07 DOWNTO 0);
 
-      PC_OUT_FPGA       :  OUT STD_LOGIC_VECTOR(7 DOWNTO 0);  -- 2 DISPLAYS DE 7 SEGMENTOS
+      WRPC_FPGA     :  OUT STD_LOGIC;
+      WRIR_FPGA     :  OUT STD_LOGIC;
+      WRREG_FPGA    :  OUT STD_LOGIC;
+      WRMEM_FPGA    :  OUT STD_LOGIC;
+      RDMEM_FPGA    :  OUT STD_LOGIC;
+      MUXPC_FPGA    :  OUT STD_LOGIC;
+      MUXAREG_FPGA  :  OUT STD_LOGIC;
+      MUXDREG_FPGA  :  OUT STD_LOGIC_VECTOR(01 DOWNTO 0);
+      OPULA_FPGA    :  OUT STD_LOGIC_VECTOR(02 DOWNTO 0);
 
-      WRPC_OUT_FPGA     :  OUT STD_LOGIC;                     -- 1 LED
-      WRIR_OUT_FPGA     :  OUT STD_LOGIC;                     -- 1 LED
-      WRREG_OUT_FPGA    :  OUT STD_LOGIC;                     -- 1 LED
-      WRMEM_OUT_FPGA    :  OUT STD_LOGIC;                     -- 1 LED
-      RDMEM_OUT_FPGA    :  OUT STD_LOGIC;                     -- 1 LED
-      MUXPC_OUT_FPGA    :  OUT STD_LOGIC;                     -- 1 LED
-      MUXAREG_OUT_FPGA  :  OUT STD_LOGIC;                     -- 1 LED
-      MUXDREG_OUT_FPGA  :  OUT STD_LOGIC_VECTOR(1 DOWNTO 0);  -- 2 LEDS
-      OPULA_OUT_FPGA    :  OUT STD_LOGIC_VECTOR(2 DOWNTO 0);  -- 3 LEDS
+      FLAG_C_FPGA   :  OUT STD_LOGIC;
+      FLAG_V_FPGA   :  OUT STD_LOGIC;
+      FLAG_N_FPGA   :  OUT STD_LOGIC;
+      FLAG_Z_FPGA   :  OUT STD_LOGIC;
 
-      FLAG_C_OUT_FPGA   :  OUT STD_LOGIC;                     -- 1 LED
-      FLAG_V_OUT_FPGA   :  OUT STD_LOGIC;                     -- 1 LED
-      FLAG_N_OUT_FPGA   :  OUT STD_LOGIC;                     -- 1 LED
-      FLAG_Z_OUT_FPGA   :  OUT STD_LOGIC;                     -- 1 LED
-      ------------------------------------------------------------------------------------
+      ADDR_FPGA     :  IN  STD_LOGIC_VECTOR(07 DOWNTO 0);
+      DATA_FPGA     :  OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+-- VERIFICACAO ---------------------------------------------------------------------------
 
       rst     :  in   std_logic;                                    -- Reset
       clk     :  in   std_logic);                                   -- Clock
@@ -109,25 +111,38 @@ architecture CPU of CPU is
    signal Ncomposto  : std_logic := '0';
 
 
+-- VERIFICACAO ---------------------------------------------------------------------------
+   SIGNAL RDMEM_FPGA_interno   : STD_LOGIC                    := '0';
+   SIGNAL ADDRRW_FPGA          : STD_LOGIC_VECTOR(7 DOWNTO 0) := (OTHERS => '0');
+   SIGNAL ESTADO_FPGA_interno  : STD_LOGIC_VECTOR(3 DOWNTO 0) := (OTHERS => '0');
+-- VERIFICACAO ---------------------------------------------------------------------------
+
+
 begin
 
 
-   -- VERIFICACAO ------------------------------
-   OPCODE_OUT_FPGA   <=  OPinterno (3 downto 0);
-   PC_OUT_FPGA       <=  PC;
-   wrPC_OUT_FPGA     <=  wrPC;
-   wrIR_OUT_FPGA     <=  wrIR;   
-   wrReg_OUT_FPGA    <=  wrReg;  
-   wrMem_OUT_FPGA    <=  wrMem;  
-   rdMem_OUT_FPGA    <=  rdMem;  
-   muxPC_OUT_FPGA    <=  muxPC;  
-   muxAReg_OUT_FPGA  <=  muxAReg;
-   muxDReg_OUT_FPGA  <=  muxDReg;
-   FLAG_C_OUT_FPGA   <=  flag_C;
-   FLAG_V_OUT_FPGA   <=  flag_V;
-   FLAG_N_OUT_FPGA   <=  Ncomposto;
-   FLAG_Z_OUT_FPGA   <=  Zcomposto;
-   ---------------------------------------------
+-- VERIFICACAO ---------------------------------------------------------------------------
+   OPCODE_FPGA   <=  OPINTERNO (3 DOWNTO 0);
+   ESTADO_FPGA   <=  ESTADO_FPGA_INTERNO;
+   PC_FPGA       <=  PC;
+   WRPC_FPGA     <=  WRPC;
+   WRIR_FPGA     <=  WRIR;   
+   WRREG_FPGA    <=  WRREG;  
+   WRMEM_FPGA    <=  WRMEM;  
+   RDMEM_FPGA    <=  RDMEM;  
+   MUXPC_FPGA    <=  MUXPC;  
+   MUXAREG_FPGA  <=  MUXAREG;
+   MUXDREG_FPGA  <=  MUXDREG;
+   FLAG_C_FPGA   <=  FLAG_C;
+   FLAG_V_FPGA   <=  FLAG_V;
+   FLAG_N_FPGA   <=  NCOMPOSTO;
+   FLAG_Z_FPGA   <=  ZCOMPOSTO;
+                                -- ESTADO FSM          =  FIM
+   RDMEM_FPGA_INTERNO <= '1'       WHEN ESTADO_FPGA_INTERNO = "1011"  ELSE  RDMEM;
+   ADDRRW_FPGA        <= ADDR_FPGA WHEN ESTADO_FPGA_INTERNO = "1011"  ELSE  MAR;
+   DATA_FPGA          <= MDR       WHEN ESTADO_FPGA_INTERNO = "1011"  ELSE  "0000000000000000";
+-- VERIFICACAO ---------------------------------------------------------------------------
+
 
 
    --------------------------------------------------
@@ -154,11 +169,16 @@ begin
       port map (
          rst      =>  rst,
          clk      =>  clk,
-         rd_en    =>  rdMem,
          wr_en    =>  wrMem,
-         addr_rw  =>  MAR,
+
+-- VERIFICACAO ---------------------------------------------------------------------------
+         RD_EN    =>  RDMEM_FPGA_INTERNO,
+         ADDR_RW  =>  ADDRRW_FPGA,
+-- VERIFICACAO ---------------------------------------------------------------------------
+
          data_w   =>  A,
-         data_r   =>  MDR );
+         data_r   =>  MDR);
+         
 
 
    Bloco_GPR:  entity  work.GPR        -- Instância do BANCO DE REGISTRADORES
@@ -221,9 +241,9 @@ begin
    Bloco_UC :  entity  work.FSM        -- Instancia da FSM da UNIDADE DE CONTROLE
       port map (
 
-         -- VERIFICACAO --------------------
-         ESTADO_FSM_FPGA =>  ESTADO_FSM_FPGA,
-         -----------------------------------
+-- VERIFICACAO ---------------------------------------------------------------------------
+         ESTADO_FPGA =>  ESTADO_FPGA_INTERNO,
+-- VERIFICACAO ---------------------------------------------------------------------------
 
          rst      =>  rst,
          clk      =>  clk,
@@ -323,8 +343,13 @@ begin
    -- Instancia da CPU
    dut_CPU:  entity  work.CPU
       port map(
-         clk     =>  clk,
-         rst     =>  rst);
+
+-- VERIFICACAO ---------------------------------------------------------------------------
+         ADDR_FPGA  => (OTHERS  => '0'),
+-- VERIFICACAO ---------------------------------------------------------------------------
+
+         clk        =>  clk,
+         rst        =>  rst);
 
 
    -- Processo RESET

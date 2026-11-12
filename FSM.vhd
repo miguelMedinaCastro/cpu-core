@@ -15,9 +15,9 @@ use IEEE.NUMERIC_STD.ALL;
 entity FSM is
    port (
 
-      -- VERIFICACAO -------------------------------------
-      ESTADO_FSM_FPGA :  out std_logic_vector(3 downto 0);      
-      ----------------------------------------------------
+-- VERIFICACAO ---------------------------------------------------------------------------
+      ESTADO_FPGA :  OUT STD_LOGIC_VECTOR(3 DOWNTO 0);      
+-- VERIFICACAO ---------------------------------------------------------------------------
 
       rst      :  in   std_logic;                        -- Reset
       clk      :  in   std_logic;                        -- Clock
@@ -81,21 +81,21 @@ architecture FSM of FSM is
 begin
 
 
-   -- VERIFICACAO -------------------------------------
-   ESTADO_FSM_FPGA <= "0000"  when  EA = BUSCA     else
-                      "0001"  when  EA = DECODE    else
-                      "0010"  when  EA = RD_MEM    else
-                      "0011"  when  EA = WR_REG    else
-                      "0100"  when  EA = WR_REG2   else
-                      "0101"  when  EA = RD_REG    else
-                      "0110"  when  EA = WR_MEM    else
-                      "0111"  when  EA = RD_REG2   else
-                      "1000"  when  EA = ULA_EXEC  else
-                      "1001"  when  EA = WR_REG3   else
-                      "1010"  when  EA = WR_PC     else
-                      "1011"  when  EA = FIM       else
-                      "1111";
-   ----------------------------------------------------
+-- VERIFICACAO ---------------------------------------------------------------------------
+   ESTADO_FPGA  <=  "0000"  WHEN  EA = BUSCA     ELSE
+                    "0001"  WHEN  EA = DECODE    ELSE
+                    "0010"  WHEN  EA = RD_MEM    ELSE
+                    "0011"  WHEN  EA = WR_REG    ELSE
+                    "0100"  WHEN  EA = WR_REG2   ELSE
+                    "0101"  WHEN  EA = RD_REG    ELSE
+                    "0110"  WHEN  EA = WR_MEM    ELSE
+                    "0111"  WHEN  EA = RD_REG2   ELSE
+                    "1000"  WHEN  EA = ULA_EXEC  ELSE
+                    "1001"  WHEN  EA = WR_REG3   ELSE
+                    "1010"  WHEN  EA = WR_PC     ELSE
+                    "1011"  WHEN  EA = FIM       ELSE
+                    "1111";
+-- VERIFICACAO ---------------------------------------------------------------------------
 
 
    Zinterno <= Z  when  (EA = WR_REG  or  EA = WR_REG2  or  EA = WR_REG3);
